@@ -2,6 +2,8 @@ import urwid
 import json
 from subprocess import Popen, PIPE
 
+DEFAULT_TONE = '0'
+
 
 class CustomEdit(urwid.Edit):
     def __init__(self, label, on_enter, *args, **kwargs):
@@ -31,8 +33,28 @@ class CustomSelectableIcon(urwid.SelectableIcon):
 def all_emojis():
     with open('categories/all.json', 'r') as f:
         emoji_dict = json.loads(f.read())
-        emoji_dict['_all'] = [item for sublist in emoji_dict.values() for item in sublist]
-        return emoji_dict
+
+    if DEFAULT_TONE != '0':
+        for cat, cat_list in emoji_dict.items():
+            bases = {}
+            for i in cat_list:
+                if '_type_' + DEFAULT_TONE in i['key']:
+                    base = i['key'][:i['key'].index('_type_')]
+                    bases[base] = i.copy()
+                    bases[base]['key'] = base
+
+            for n, i in enumerate(cat_list):
+                if i['key'] in bases:
+                    emoji_dict[cat][n] = bases[i['key']]
+
+    all_emojis = []
+    for cat in emoji_dict.keys():
+        cleaned = [k for k in emoji_dict[cat] if '_type_' not in k['key']]
+        emoji_dict[cat] = cleaned
+        all_emojis += cleaned
+    emoji_dict['_all'] = all_emojis
+
+    return emoji_dict
 
 
 class App():
@@ -44,9 +66,9 @@ class App():
         self.columns = urwid.Columns([(12, self.menu), self.pane], 2)
         self.pile = urwid.Pile([self.edit, ('weight', 1, self.columns)])
 
+        urwid.connect_signal(self.edit, 'change', self.filter_emojis)
         self.show_emojis(None, self.emoji_bank['People'])
         self.pane.focus_position = 0
-        urwid.connect_signal(self.edit, 'change', self.filter_emojis)
 
     @property
     def category_menu(self):
@@ -82,16 +104,18 @@ class App():
     def show_emojis(self, widget, emojis):
         cells = []
         for emoji in emojis:
-            if 'type' not in emoji['key'] and 'family' not in emoji['key']:
-                name = emoji['key'][:15] + (emoji['key'][15:] and '..')
-                text = CustomSelectableIcon('{} {}'.format(emoji['value'], name), 0)
-                mapped = urwid.AttrMap(
-                    text,
-                    '', 'reveal focus'
-                )
+            name = emoji['key'][:15] + (emoji['key'][15:] and '..')
+            text = CustomSelectableIcon(
+                '{} {}'.format(emoji['value'], name),
+                0
+            )
+            mapped = urwid.AttrMap(
+                text,
+                '', 'reveal focus'
+            )
 
-                widget = (mapped, ('given', 21))
-                cells.append(widget)
+            widget = (mapped, ('given', 21))
+            cells.append(widget)
         self.pane.contents = cells
 
 
