@@ -124,10 +124,15 @@ palette = [
 ]
 
 
+def handle_keys(key):
+    if key == 'esc':
+        raise urwid.ExitMainLoop()
+
+
 def main():
     app = App()
     widget = app.widget
-    loop = urwid.MainLoop(widget, palette=palette)
+    loop = urwid.MainLoop(widget, palette=palette, unhandled_input=handle_keys)
     loop.run()
 
 
