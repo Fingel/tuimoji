@@ -1,8 +1,7 @@
 import urwid
 import json
+import argparse
 from subprocess import Popen, PIPE
-
-DEFAULT_TONE = '0'
 
 
 class CustomEdit(urwid.Edit):
@@ -30,15 +29,15 @@ class CustomSelectableIcon(urwid.SelectableIcon):
         p.communicate(contents)
 
 
-def all_emojis():
+def all_emojis(skin_tone):
     with open('categories/all.json', 'r') as f:
         emoji_dict = json.loads(f.read())
 
-    if DEFAULT_TONE != '0':
+    if skin_tone != '0':
         for cat, cat_list in emoji_dict.items():
             bases = {}
             for i in cat_list:
-                if '_type_' + DEFAULT_TONE in i['key']:
+                if '_type_' + skin_tone in i['key']:
                     base = i['key'][:i['key'].index('_type_')]
                     bases[base] = i.copy()
                     bases[base]['key'] = base
@@ -58,12 +57,20 @@ def all_emojis():
 
 
 class App():
-    def __init__(self):
-        self.emoji_bank = all_emojis()
+    def __init__(self, skin_tone='0'):
+        self.emoji_bank = all_emojis(skin_tone)
         self.pane = urwid.GridFlow([], 21, 1, 1, 'left')
         self.edit = CustomEdit('Filter: ', on_enter=self.focus_results)
         self.menu = self.category_menu
-        self.columns = urwid.Columns([(12, self.menu), self.pane], 2)
+        self.columns = urwid.Columns(
+            [(12, urwid.Pile([
+                    self.menu,
+                    urwid.Divider(),
+                    self.help_text
+                ])
+              ), self.pane],
+            2
+        )
         self.pile = urwid.Pile([self.edit, ('weight', 1, self.columns)])
 
         urwid.connect_signal(self.edit, 'change', self.filter_emojis)
@@ -81,6 +88,14 @@ class App():
         return urwid.BoxAdapter(
             urwid.ListBox(urwid.SimpleFocusListWalker(body)), 10
         )
+
+    @property
+    def help_text(self):
+        return urwid.Pile([
+            urwid.Text('Esc: quit'),
+            urwid.Text('Enter: copy'),
+            urwid.Text('Arrows: move')
+        ])
 
     @property
     def widget(self):
@@ -130,7 +145,23 @@ def handle_keys(key):
 
 
 def main():
-    app = App()
+    description = 'TuiMoji: Terminal based emoji chooser.'
+    tone_help = 'Skin tone to use. ' \
+        '"0": None (default) ' \
+        '"1_2": light tone ' \
+        '"3": medium light ' \
+        '"4": medium '\
+        '"5": medium dark '\
+        '"6": dark'
+    choices = ['0', '1_2', '3', '4', '5', '6']
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument(
+        '-t', '--tone', help=tone_help, default='0', choices=choices
+    )
+    args = parser.parse_args()
+    skin_tone = args.tone
+
+    app = App(skin_tone=skin_tone)
     widget = app.widget
     loop = urwid.MainLoop(widget, palette=palette, unhandled_input=handle_keys)
     loop.run()
