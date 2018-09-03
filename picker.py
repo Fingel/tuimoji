@@ -3,6 +3,18 @@ import json
 from subprocess import Popen, PIPE
 
 
+class CustomEdit(urwid.Edit):
+    def __init__(self, label, on_enter, *args, **kwargs):
+        self.on_enter = on_enter
+        return super().__init__(label, *args, **kwargs)
+
+    def keypress(self, size, key):
+        if key == 'enter':
+            return self.on_enter()
+        else:
+            return super().keypress(size, key)
+
+
 class CustomSelectableIcon(urwid.SelectableIcon):
 
     def keypress(self, size, key):
@@ -26,18 +38,22 @@ def all_emojis():
 class App():
     def __init__(self):
         self.emoji_bank = all_emojis()
-        self.edit = urwid.Edit('Filter: ')
-        self.menu = self.category_menu
         self.pane = urwid.GridFlow([], 21, 1, 1, 'left')
-        self.show_emojis(None, 'People')
+        self.edit = CustomEdit('Filter: ', on_enter=self.focus_results)
+        self.menu = self.category_menu
+        self.columns = urwid.Columns([(12, self.menu), self.pane], 2)
+        self.pile = urwid.Pile([self.edit, ('weight', 1, self.columns)])
+
+        self.show_emojis(None, self.emoji_bank['People'])
         self.pane.focus_position = 0
+        urwid.connect_signal(self.edit, 'change', self.filter_emojis)
 
     @property
     def category_menu(self):
         body = [urwid.Divider()]
         for cat in [c for c in self.emoji_bank.keys() if c != '_all']:
             button = urwid.AttrMap(
-                urwid.Button(cat, self.show_emojis, cat),
+                urwid.Button(cat, self.show_emojis, self.emoji_bank[cat]),
                 '', 'reveal focus')
             body.append(button)
         return urwid.BoxAdapter(
@@ -47,18 +63,25 @@ class App():
     @property
     def widget(self):
         return urwid.Filler(
-            urwid.Pile([
-                self.edit,
-                ('weight', 1, urwid.Columns([
-                    (15, self.menu),
-                    self.pane
-                ]))
-            ])
+            self.pile,
+            'top'
         )
 
-    def show_emojis(self, widget, category):
+    def focus_results(self):
+        self.pile.focus_position = 1
+        self.columns.focus_position = 1
+        self.pane.focus_position = 0
+
+    def filter_emojis(self, widget, text):
+        if not text:
+            self.show_emojis(None, self.emoji_bank['_all'])
+        else:
+            filtered = [e for e in self.emoji_bank['_all'] if text in e['key']]
+            self.show_emojis(None, filtered)
+
+    def show_emojis(self, widget, emojis):
         cells = []
-        for emoji in self.emoji_bank[category]:
+        for emoji in emojis:
             if 'type' not in emoji['key'] and 'family' not in emoji['key']:
                 name = emoji['key'][:15] + (emoji['key'][15:] and '..')
                 text = CustomSelectableIcon('{} {}'.format(emoji['value'], name), 0)
