@@ -410,7 +410,7 @@
   },
   {
     "key": "olympic_rings",
-    "value": "◯‍◯‍◯‍◯‍◯"
+    "value": "◯◯◯◯◯"
   }
 ],
 
@@ -4709,11 +4709,11 @@
   },
   {
     "key": "couple_with_heart_woman",
-    "value": "👩‍❤️‍👩"
+    "value": "👩❤️👩"
   },
   {
     "key": "couple_with_heart_man",
-    "value": "👨‍❤️‍👨"
+    "value": "👨❤️👨"
   },
   {
     "key": "kiss",
@@ -4721,11 +4721,11 @@
   },
   {
     "key": "kiss_woman",
-    "value": "👩‍❤️‍💋‍👩"
+    "value": "👩❤️💋👩"
   },
   {
     "key": "kiss_man",
-    "value": "👨‍❤️‍💋‍👨"
+    "value": "👨❤️💋👨"
   },
   {
     "key": "family",
@@ -4733,59 +4733,59 @@
   },
   {
     "key": "family_man_women_girl",
-    "value": "👨‍👩‍👧"
+    "value": "👨👩👧"
   },
   {
     "key": "family_man_women_girl_boy",
-    "value": "👨‍👩‍👧‍👦"
+    "value": "👨👩👧👦"
   },
   {
     "key": "family_man_women_boy_boy",
-    "value": "👨‍👩‍👦‍👦"
+    "value": "👨👩👦👦"
   },
   {
     "key": "family_man_women_girl_girl",
-    "value": "👨‍👩‍👧‍👧"
+    "value": "👨👩👧👧"
   },
   {
     "key": "family_woman_women_boy",
-    "value": "👩‍👩‍👦"
+    "value": "👩👩👦"
   },
   {
     "key": "family_woman_women_girl",
-    "value": "👩‍👩‍👧"
+    "value": "👩👩👧"
   },
   {
     "key": "family_woman_women_girl_boy",
-    "value": "👩‍👩‍👧‍👦"
+    "value": "👩👩👧👦"
   },
   {
     "key": "family_woman_women_boy_boy",
-    "value": "👩‍👩‍👦‍👦"
+    "value": "👩👩👦👦"
   },
   {
     "key": "family_woman_women_girl_girl",
-    "value": "👩‍👩‍👧‍👧"
+    "value": "👩👩👧👧"
   },
   {
     "key": "family_man_man_boy",
-    "value": "👨‍👨‍👦"
+    "value": "👨👨👦"
   },
   {
     "key": "family_man_man_girl",
-    "value": "👨‍👨‍👧"
+    "value": "👨👨👧"
   },
   {
     "key": "family_man_man_girl_boy",
-    "value": "👨‍👨‍👧‍👦"
+    "value": "👨👨👧👦"
   },
   {
     "key": "family_man_man_boy_boy",
-    "value": "👨‍👨‍👦‍👦"
+    "value": "👨👨👦👦"
   },
   {
     "key": "family_man_man_girl_girl",
-    "value": "👨‍👨‍👧‍👧"
+    "value": "👨👨👧👧"
   },
   {
     "key": "woman_clothes",
@@ -5872,7 +5872,7 @@
   },
   {
     "key": "eye_in_speech_bubble",
-    "value": "👁‍🗨"
+    "value": "👁🗨"
   },
   {
     "key": "thought_balloon",
