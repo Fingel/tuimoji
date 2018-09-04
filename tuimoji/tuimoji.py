@@ -4,6 +4,7 @@ import urwid
 import json
 import argparse
 from subprocess import Popen, PIPE
+from pkg_resources import resource_string
 
 
 class CustomEdit(urwid.Edit):
@@ -35,8 +36,8 @@ class CustomSelectableIcon(urwid.SelectableIcon):
 
 
 def all_emojis(skin_tone):
-    with open('data/emojis.json', 'r') as f:
-        emoji_dict = json.loads(f.read())
+    emoji_json = resource_string(__name__, 'emojis.json')
+    emoji_dict = json.loads(emoji_json)
 
     if skin_tone != '0':
         for cat, cat_list in emoji_dict.items():
