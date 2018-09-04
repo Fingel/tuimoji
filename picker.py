@@ -60,7 +60,7 @@ class App():
     def __init__(self, skin_tone='0'):
         self.emoji_bank = all_emojis(skin_tone)
         self.pane = urwid.GridFlow([], 21, 1, 1, 'left')
-        self.edit = CustomEdit('Filter: ', on_enter=self.focus_results)
+        self.edit = CustomEdit('Search: ', on_enter=self.focus_results)
         self.menu = self.category_menu
         self.columns = urwid.Columns(
             [(12, urwid.Pile([
@@ -94,7 +94,7 @@ class App():
         return urwid.Pile([
             urwid.Text('Esc: quit'),
             urwid.Text('Enter: copy'),
-            urwid.Text('Arrows: move')
+            urwid.Text('Cursor: move')
         ])
 
     @property
