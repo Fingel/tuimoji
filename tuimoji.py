@@ -1,3 +1,5 @@
+#!/bin/env python3
+
 import urwid
 import json
 import argparse
@@ -33,7 +35,7 @@ class CustomSelectableIcon(urwid.SelectableIcon):
 
 
 def all_emojis(skin_tone):
-    with open('categories/all.json', 'r') as f:
+    with open('data/emojis.json', 'r') as f:
         emoji_dict = json.loads(f.read())
 
     if skin_tone != '0':
