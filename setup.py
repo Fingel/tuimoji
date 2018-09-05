@@ -7,7 +7,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='tuimoji',
-    version='0.0.1',
+    version='1.0.0',
     description='A terminal ui based emoji selector.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -16,11 +16,12 @@ setup(
     author_email='austin@m51.io',
     license='GPLv3',
     classifiers=[
-        'Classifier: Development Status :: 4 - Beta',
-        'Classifier: Environment :: Console (Text Based)',
-        'Operating System :: OS Independent',
+        'Development Status :: 5 - Production/Stable',
+        'Topic :: System :: Console Fonts',
+        'Topic :: Text Processing :: Fonts',
+        'Operating System :: Unix',
         'Programming Language :: Python :: 3',
-        'RequiresDist: xclip'
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
     ],
     keywords='emoji emojis console terminal',
     project_urls={

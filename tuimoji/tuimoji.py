@@ -3,6 +3,7 @@
 import urwid
 import json
 import argparse
+from shutil import which
 from subprocess import Popen, PIPE
 from pkg_resources import resource_string
 
@@ -152,7 +153,18 @@ def handle_keys(key):
         raise urwid.ExitMainLoop()
 
 
+def test_exec(executable):
+    if not which(executable):
+        raise FileNotFoundError('Could not find ' + executable)
+
+
 def main():
+    try:
+        test_exec('xclip')
+    except FileNotFoundError:
+        print('ERROR: Could not find xclip. Do you have it intalled?')
+        return
+
     description = 'TuiMoji: Terminal based emoji chooser.'
     tone_help = 'Skin tone to use. ' \
         '"0": None (default) ' \
