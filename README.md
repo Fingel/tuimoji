@@ -8,6 +8,7 @@ leaving the comfort of your terminal!
 
 * [Features](#features)
 * [Installation](#installation)
+    * [Arch Linux](#arch-linux)
 * [Usage](#usage)
     * [Skin tone modifier](#skin-tone-modifier)
     * [Change the clipboard](#change-the-clipboard)
@@ -27,6 +28,13 @@ via your favorite package manager (if it is not already).
 To install tuimoji, use pip:
 
     pip3 install --user tuimoji
+
+### Arch Linux
+
+tuimoji is [available in the AUR](https://aur.archlinux.org/packages/tuimoji/)
+and can be installed via `makepkg` or with your favorite AUR helper:
+
+    yay -S tuimoji
 
 ## Usage
 
