@@ -4,7 +4,7 @@ tuimoji is a terminal based emoji chooser for \*nix. With tuimoji you
 can search and browse emojis and copy them to your clipboard without ever
 leaving the comfort of your terminal!
 
-![Tuimoji main window](https://s3-us-west-2.amazonaws.com/pedaldp/images/2018-09-04-tuimoji/people.png)
+[![asciicast](https://asciinema.org/a/200302.png)](https://asciinema.org/a/200302)
 
 * [Features](#features)
 * [Installation](#installation)
