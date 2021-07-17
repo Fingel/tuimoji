@@ -84,6 +84,12 @@ Launch tuimoji with the `-s` or `--selection` command line argument:
 
     tuimoji -s primary
 
+### Do not exit after selecting an emoji
+
+By default, tuimoji will exit after an emoji has been copied. To keep it running
+instead, use the `-k` or `--keep-alive` command line argument:
+
+    tuimoji -k
 
 ## Acknowledgements
 
