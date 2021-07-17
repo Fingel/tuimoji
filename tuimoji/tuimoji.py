@@ -21,14 +21,17 @@ class CustomEdit(urwid.Edit):
 
 
 class CustomSelectableIcon(urwid.SelectableIcon):
-    def __init__(self, text, cursor_position, selection, *args, **kwargs):
+    def __init__(self, text, cursor_position, selection, keep_alive, *args, **kwargs):
         self.selection = selection
+        self.keep_alive = keep_alive
         return super().__init__(text, cursor_position, *args, **kwargs)
 
     def keypress(self, size, key):
         if key == 'enter':
             self.paste(self.get_text()[0].split(' ')[0].encode('utf-8'))
-            raise urwid.ExitMainLoop()
+
+            if not self.keep_alive:
+                raise urwid.ExitMainLoop()
         return key
 
     def paste(self, contents):
@@ -64,8 +67,9 @@ def all_emojis(skin_tone):
 
 
 class App():
-    def __init__(self, skin_tone='0', selection='clipboard'):
+    def __init__(self, skin_tone='0', selection='clipboard', keep_alive=False):
         self.selection = selection
+        self.keep_alive = keep_alive
         self.emoji_bank = all_emojis(skin_tone)
         self.pane = urwid.GridFlow([], 21, 1, 1, 'left')
         self.edit = CustomEdit('Search: ', on_enter=self.focus_results)
@@ -131,7 +135,8 @@ class App():
             text = CustomSelectableIcon(
                 '{} {}'.format(emoji['value'], name),
                 0,
-                self.selection
+                self.selection,
+                keep_alive=self.keep_alive
             )
             mapped = urwid.AttrMap(
                 text,
@@ -177,6 +182,7 @@ def main():
     clip_help = 'X selection (clipboard) to use.' \
         ' Choices are "clipboard" (default), "primary" or "secondary".'
     clip_choices = ['clipboard', 'primary', 'secondary']
+    keep_alive_help = 'Do not exit after an emoji has been copied.'
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
         '-t', '--tone', help=tone_help,
@@ -186,9 +192,13 @@ def main():
         '-s', '--selection', help=clip_help,
         default='clipboard', choices=clip_choices
     )
+    parser.add_argument(
+        '-k', '--keep-alive', help=keep_alive_help,
+        action='store_true'
+    )
     args = parser.parse_args()
 
-    app = App(skin_tone=args.tone, selection=args.selection)
+    app = App(skin_tone=args.tone, selection=args.selection, keep_alive=args.keep_alive)
     widget = app.widget
     loop = urwid.MainLoop(widget, palette=palette, unhandled_input=handle_keys)
     loop.run()
