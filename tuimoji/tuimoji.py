@@ -32,7 +32,7 @@ class CustomSelectableIcon(urwid.SelectableIcon):
         return key
 
     def paste(self, contents):
-        p = Popen(['nohup', 'xclip', '-selection', self.selection, '&> /tmp/nohup.out'], stdin=PIPE)
+        p = Popen(['xclip', '-selection', self.selection, '& disown'], stdin=PIPE)
         p.communicate(contents)
 
 
